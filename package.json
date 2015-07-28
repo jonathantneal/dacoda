@@ -1,0 +1,23 @@
+{
+	"name": "dacoda",
+	"version": "0.0.0",
+	"description": "A simple tool for creating code inputs",
+	"main": "Pen.js",
+	"files": [
+		"Pen.js",
+		"Pen.css"
+	],
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Jonathan Neal <jonathantneal@hotmail.com> (http://jonathantneal.com)",
+	"license": "CC0-1.0",
+	"homepage": "https://github.com/jonathantneal/dacoda",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jonathantneal/dacoda.git"
+	},
+	"bugs": {
+		"url": "https://github.com/jonathantneal/dacoda/issues"
+	}
+}
