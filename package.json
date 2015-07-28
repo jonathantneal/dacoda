@@ -2,10 +2,10 @@
 	"name": "dacoda",
 	"version": "0.0.0",
 	"description": "A simple tool for creating code inputs",
-	"main": "Pen.js",
+	"main": "dacoda.js",
 	"files": [
-		"Pen.js",
-		"Pen.css"
+		"dacoda.js",
+		"dacoda.css"
 	],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
