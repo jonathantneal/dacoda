@@ -1,6 +1,6 @@
 {
 	"name": "dacoda",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"description": "A simple tool for creating code inputs",
 	"main": "dacoda.js",
 	"files": [
