@@ -1,31 +1,31 @@
 /* typography */
 
 @font-face {
-	font-family: monospace;
+	font-family: code;
 	font-style: normal;
 	font-weight: 400;
-	src: local("Menlo-Regular"), local("Monaco"), local("Consolas"), local("DejaVu Sans Mono"), local("DejaVu Sans Mono"), local(DejaVuSansMono);
+	src: local("Menlo-Regular"), local("Monaco"), local("Consolas"), local("DejaVu Sans Mono"), local("DejaVu Sans Mono"), local("DejaVuSansMono");
 }
 
 @font-face {
-	font-family: monospace;
+	font-family: code;
 	font-style: italic;
 	font-weight: 400;
-	src: local("Menlo-Regular"), local("Monaco"), local("Consolas Italic"), local(Consolas-Italic), local("DejaVu Sans Mono Oblique"), local(DejaVuSansMono-Oblique);
+	src: local("Menlo-Regular"), local("Monaco"), local("Consolas Italic"), local("Consolas-Italic"), local("DejaVu Sans Mono Oblique"), local("DejaVuSansMono-Oblique");
 }
 
 @font-face {
-	font-family: monospace;
+	font-family: code;
 	font-style: normal;
 	font-weight: 700;
-	src: local("Menlo-Regular"), local("Monaco"), local("Consolas Bold"), local(Consolas-Bold), local("DejaVu Sans Mono Bold"), local(DejaVuSansMono-Bold);
+	src: local("Menlo-Regular"), local("Monaco"), local("Consolas Bold"), local("Consolas-Bold"), local("DejaVu Sans Mono Bold"), local("DejaVuSansMono-Bold");
 }
 
 @font-face {
-	font-family: monospace;
+	font-family: code;
 	font-style: italic;
 	font-weight: 700;
-	src: local("Menlo-Regular"), local("Monaco"), local("Consolas Bold Italic"), local(Consolas-BoldItalic), local("DejaVu Sans Mono Bold Oblique"), local(DejaVuSansMono-BoldOblique);
+	src: local("Menlo-Regular"), local("Monaco"), local("Consolas Bold Italic"), local("Consolas-BoldItalic"), local("DejaVu Sans Mono Bold Oblique"), local("DejaVuSansMono-BoldOblique");
 }
 
 /* animations */
@@ -60,15 +60,15 @@ body {
 	background: #1d1f20;
 	color: #ddca7e;
 	position: fixed;
-	width: 100%; height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 .dacoda-input,
 .dacoda-plain,
-.dacoda-style,
-.dacoda-output {
+.dacoda-style {
 	box-sizing: border-box;
-	font: 100%/1.25 monospace, monospace;
+	font: 100%/1.25 code, monospace;
 	font-size: 100%;
 	padding: 2em;
 	position: absolute;
@@ -82,50 +82,16 @@ body {
 	overflow: hidden;
 }
 
-.dacoda-input,
-.dacoda-output {
+.dacoda-input {
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
 }
 
-.dacoda-input {
-	box-shadow: inset .125em 0 0 .5em rgba(255,255,255,0.05);
-}
-
-.dacoda-output {
-	box-shadow: inset -.125em 0 0 .5em rgba(255,255,255,0.05);
-}
-
-@media screen and (max-width: 639px) {
-	.dacoda-ouput {
-		font-size: 75%;
-	}
-
-	.dacoda-input,
-	.dacoda-plain,
-	.dacoda-style {
-		top: 0; right: 0; bottom: 50%; left: 0;
-		width: 100%; height: 50%;
-	}
-
-	.dacoda-output {
-		top: 50%; right: 0; bottom: 0; left: 0;
-		width: 100%; height: 50%;
-	}
-}
-
-@media screen and (min-width: 640px) {
-	.dacoda-input,
-	.dacoda-plain,
-	.dacoda-style {
-		top: 0; right: 50%; bottom: 0; left: 0;
-		width: 50%; height: 100%;
-	}
-
-	.dacoda-output {
-		top: 0; right: 0; bottom: 0; left: 50%;
-		width: 50%; height: 100%;
-	}
+.dacoda-input,
+.dacoda-plain,
+.dacoda-style {
+	top: 0; right: 0; bottom: 0; left: 0;
+	width: 100%; height: 100%;
 }
 
 .dacoda-input,
@@ -188,8 +154,16 @@ body {
 	color: #56daef;
 }
 
+.token.number {
+	color: #96aaef;
+}
+
 .token.function {
 	color: #ddca7e;
+}
+
+.token.operator {
+	color: #ff3471;
 }
 
 .token.url {

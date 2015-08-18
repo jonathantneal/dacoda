@@ -12,15 +12,17 @@
 		window.postMessage('*', '*');
 	}
 
-	// constructor
-	function constructor(self) {
+	// Dacoda
+	function Dacoda() {
+		// self
+		var self = this;
+
 		// create elements
 		var block = document.createElement('span');
 		var plain = document.createElement('span');
 		var caret = document.createElement('span');
 		var style = document.createElement('span');
 		var input = document.createElement('textarea');
-		var output = document.createElement('span');
 
 		// configure input
 		input.setAttribute('wrap', 'off');
@@ -32,7 +34,6 @@
 		plain.className  = 'dacoda-plain';
 		input.className  = 'dacoda-input';
 		caret.className  = 'dacoda-caret';
-		output.className = 'dacoda-output';
 
 		if (/iP(ad|hone);/.test(navigator.userAgent)) block.className += ' -ios';
 
@@ -45,27 +46,29 @@
 				after:  plain.appendChild(document.createTextNode('')),
 			style:  block.appendChild(style),
 				styleText: style.appendChild(document.createTextNode('')),
-			input:  block.appendChild(input),
-			output: block.appendChild(output),
-				outputText: output.appendChild(document.createTextNode(''))
+			input:  block.appendChild(input)
 		};
 
 		// values
 		var current = self.current = {
-			start: 0,
-			end: 0,
+			start:   0,
+			end:     0,
 			direction: 'none',
-			value: '',
-			timeout: 0
+			scrollX: 0,
+			scrollY: 0,
+			value:   '',
 		};
 
 		// states
 		var is = self.is = {
-			focused: false,
-			active: false,
-			keydown: false,
+			focused:     false,
+			active:      false,
+			keydown:     false,
 			pointerdown: false
 		};
+
+		// timeout
+		var timeout;
 
 		// observables
 		var observables = self.observables = {};
@@ -76,7 +79,7 @@
 			// ============
 			input: function (event) {
 				// set input
-				element.outputText.nodeValue = element.styleText.nodeValue = current.value = input.value;
+				element.styleText.nodeValue = current.value = input.value;
 
 				onselection();
 
@@ -102,8 +105,8 @@
 			},
 			scroll: function (event) {
 				// match scroll position
-				plain.scrollTop = style.scrollTop = input.scrollTop;
-				plain.scrollLeft = style.scrollLeft = input.scrollLeft;
+				current.scrollY = plain.scrollTop  = style.scrollTop  = input.scrollTop;
+				current.scrollX = plain.scrollLeft = style.scrollLeft = input.scrollLeft;
 
 				callobservable('scroll', event);
 			},
@@ -159,10 +162,10 @@
 
 		function onafterkeydown() {
 			if (
-				is.start === input.selectionStart &&
-				is.end === input.selectionEnd &&
+				is.start     === input.selectionStart &&
+				is.end       === input.selectionEnd   &&
 				is.direction === input.selectionDirection
-			) deactivate();
+			) oninactive();
 			else onselection();
 		}
 
@@ -179,12 +182,12 @@
 			element.after.nodeValue  = current.value.slice(index);
 
 			// activate caret
-			activate();
+			onactive();
 
 			// deactivate caret after delay
-			clearTimeout(current.timeout);
+			clearTimeout(timeout);
 
-			current.timeout = setTimeout(deactivate, 500);
+			timeout = setTimeout(oninactive, 500);
 		}
 
 		function callobservable(type, event) {
@@ -195,25 +198,35 @@
 			}
 		}
 
-		function activate() {
+		function onactive() {
 			if (!is.active) {
 				caret.className += ' is-active';
 
 				is.active = true;
+
+				callobservable('active', {
+					type: 'active'
+				});
 			}
 		}
 
-		function deactivate() {
+		function oninactive() {
 			if (is.active) {
 				caret.className = caret.className.replace(' is-active', '');
 
 				is.active = false;
+
+				callobservable('inactive', {
+					type: 'inactive'
+				});
 			}
 		}
 
+		var hasPointer = navigator.pointerEnabled ? 1 : navigator.msPointerEnabled ? -1 : 0;
+
 		var alias = {
-			'pointerdown': 'mousedown',
-			'pointerup': 'mouseup'
+			'pointerdown': hasPointer < 0 ? 'MSPointerDown' : hasPointer ? 'pointerdown' : 'mousedown',
+			'pointerup':   hasPointer < 0 ? 'MSPointerUp'   : hasPointer ? 'pointerup'   : 'mouseup'
 		};
 
 		// bind each dispatchable to input
@@ -238,11 +251,10 @@
 	function dispatch(type, event) {
 		var dispatchable = this.dispatchables[type];
 
-		if (dispatchable) dispatchable.call(this, event);
+		if (dispatchable) {
+			dispatchable.call(this, event);
+		}
 	}
-
-	// Dacoda
-	function Dacoda() { constructor(this); }
 
 	Dacoda.prototype.observe  = observe;
 	Dacoda.prototype.dispatch = dispatch;

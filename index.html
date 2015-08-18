@@ -1,2 +1,33 @@
 <!doctype html><meta charset="utf-8"><title>dacoda</title><script src="dacoda.js"></script><link href="dacoda.css" rel="stylesheet">
-<script>document.addEventListener('DOMContentLoaded',function(){var dacoda=new Dacoda();document.body.appendChild(dacoda.element.block)})</script>
+<script src="//prismjs.github.io/prism/prism.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	var dacoda = new Dacoda();
+
+	dacoda.observe('keydown').then(function (event) {
+		if (event.keyCode === 9) {
+			// prevent default action
+			event.preventDefault();
+
+			// insert tab character
+			dacoda.element.input.value = dacoda.current.value.slice(0, dacoda.current.end) + '\t' + dacoda.current.value.slice(dacoda.current.end);
+
+			// update selection range
+			dacoda.element.input.selectionStart = dacoda.element.input.selectionEnd = dacoda.current.end + 1;
+
+			// dispatch value change event
+			dacoda.dispatch('input', event);
+		}
+	});
+
+	dacoda.observe('input').then(function (event) {
+		dacoda.element.style.innerHTML = Prism.highlight(dacoda.current.value, Prism.languages.javascript);
+	});
+
+	dacoda.element.input.value = 'function up(number) {\n\treturn number + 1;\n}';
+
+	dacoda.dispatch('input');
+
+	document.body.appendChild(dacoda.element.block);
+});
+</script>
